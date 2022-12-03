@@ -50,7 +50,7 @@ getItem(params.id);
 </script>
 
 <!-- -->
-<div class="container">
+<div class="container post_show_wrap">
   <a href={`/`} use:link>
     <button class="btn btn-outline-primary my-2">Back</button>
   </a>
@@ -60,11 +60,15 @@ getItem(params.id);
   ID : {postItem.id}<br />
   Category: {postItem.category}
   <hr />
-  <div id="post_item" >{@html postItem.content}
+  <div class="post_item" >{@html postItem.content}
   </div>  
 </div>
 
+<style>        
+</style>
 <!--
+  <div id="post_item" >{@html postItem.content}
+  </div>  
 SELECT id, title, content from Post WHERE
 id = ${id}; 
 

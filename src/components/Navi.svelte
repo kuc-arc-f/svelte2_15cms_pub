@@ -2,29 +2,19 @@
 	import {link} from 'svelte-spa-router'
 </script>
 
-<nav class="navbar navbar-expand-md navbar-light bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/" use:link>App1</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarText">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/" use:link>Home</a>
-        </li>
-        <!--
-        <li class="nav-item">
-          <a class="nav-link" href="/tasks" use:link>Tasks</a>
-        </li>
-        -->
-      </ul>
-      <ul class="navbar-nav mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" href="#">About</a>
-        </li>          
-      </ul>
-    </div>
+<div id="div_navigate_index" class="myblog_bgcolor_main">
+	<div id="div_head" class="cover">
+    <div class="container">
+      <div class="row">
+          <div class="col-sm-6 p-2">
+            <a href="/" use:link><h3>CmsName</h3></a>
+          </div>
+          <div class="col-sm-6 text-center">
+            <a href="/" class="home_link" use:link><p>
+            <i class="bi bi-house-fill mx-2"></i>
+            </p></a>
+          </div>
+      </div>
   </div>
-</nav>
-
+  </div>
+</div>
