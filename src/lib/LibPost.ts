@@ -1,4 +1,5 @@
 import LibSqlite from '../lib/LibSqlite';
+import LibPagenate from '../lib/LibPagenate';
 
 //type
 type TPostItem = {
@@ -12,14 +13,18 @@ type TPostItem = {
 const LibPost = {
   /**
   * getList
-  * @param
+  * @param db : any
+  * @param page: number
   *
   * @return
   */
-  getList: async function(db : any): Promise<any>
+  getList: async function(db : any, page: number): Promise<any>
   {
     try{
       let posts: any[] = [];
+      const pageItem = LibPagenate.getPageStart(page);
+//console.log(pageItem);
+      //
       const db = await LibSqlite.getDb();
       const sql = `
       select
@@ -32,8 +37,10 @@ const LibPost = {
       LEFT OUTER JOIN Category
       ON Post.CategoryId = Category.id
       ORDER BY Post.id DESC
+      limit ${LibPagenate.per_page} offset ${pageItem.start}
       ;
       `;
+  console.log(sql);
       const result = await LibSqlite.select(db, sql);
       if(result === null) {
         return posts;

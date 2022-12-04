@@ -29,7 +29,7 @@ const LibPage = {
       if(result === null) {
         return;
       }
-      console.log(result);
+//      console.log(result);
       let items: any[] = [];
       result.forEach(function (item: any){
         let row = {id: 0, title: "", content: "", createdAt: ""};

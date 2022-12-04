@@ -1,18 +1,21 @@
 <script lang="ts">
 import {link} from 'svelte-spa-router'
 import TopHeadBox from '../components/TopHeadBox.svelte';
+import PagingBox from '../components/PagingBox.svelte';
 import IndexRow from './posts/IndexRow.svelte';
 import LibSqlite from '../lib/LibSqlite';
 import LibPost from '../lib/LibPost';
 import LibPage from '../lib/LibPage';
 import LibCategory from '../lib/LibCategory';
 import LibCommon from '../lib/LibCommon';
+import LibPagenate from '../lib/LibPagenate';
 import Config from '../config'
 const config = Config.get_config()
 // Variable
-export let postItems: Array<any> = [], searchKey = "",
+export let postItems: Array<any> = [],
 categoryItems: Array<any> = [],
-pageItems: Array<any> = [];
+pageItems: Array<any> = [],
+searchKey = "", displayPaginate: bool = false, pagePosition: number = 1;
 
 /**
 * getList
@@ -20,13 +23,13 @@ pageItems: Array<any> = [];
 *
 * @return
 */     
-const getList = async function () {
+const getList = async function (page: number) {
   try {   
     const db = await LibSqlite.getDb();
     let items: any[] = [];
-    items = await LibPost.getList(db);
+    items = await LibPost.getList(db, page);
     items = LibCommon.getDatetimeArray(items);
-console.log(items);
+//console.log(items);
     postItems = items;
     //pages
     const pages = await LibPage.getList(db);
@@ -34,7 +37,7 @@ console.log(items);
     const category = await LibCategory.getList(db);
     pageItems = pages;
     categoryItems = category;
-console.log(categoryItems);
+//console.log(categoryItems);
   } catch (e) {
     console.error(e);
     alert("error, getList");
@@ -67,16 +70,31 @@ const dispCategory = async function (id: number) {
 */
 const searchPost = async function () {
   try {   
-//console.log("searchPost");
     const key = document.querySelector<HTMLInputElement>('#searchKey');
-console.log("key=", key.value);
-//return;
+//console.log("key=", key.value);
     const db = await LibSqlite.getDb();
     let items: any[] = [];
     items = await LibPost.getSearchItems(db, key.value);
     items = LibCommon.getDatetimeArray(items);
-console.log(items);
+//console.log(items);
     postItems = items;
+  } catch (e) {
+    console.error(e);
+  }
+}
+/**
+* nextPageDisplay
+* @param
+*
+* @return
+*/
+const nextPageDisplay = async function () {
+  try{
+    pagePosition = pagePosition + 1;
+//console.log("nextPageDisplay.=", pagePosition);
+    getList(pagePosition);
+//    const obj = LibPagenate.getPageStart(pagePosition);
+//console.log(obj);
   } catch (e) {
     console.error(e);
   }
@@ -87,13 +105,15 @@ console.log(items);
 *
 * @return
 */ 
-getList();
+getList(1);
+displayPaginate = true;
+//console.log("displayPaginate=", displayPaginate);
 </script>
 
 <!-- MarkUp -->
 <div class="body_main_wrap">
   <TopHeadBox site_name={config.MY_SITE_NAME} info_text={config.MY_SITE_INFO} />
-  <div class="container">
+  <div class="container mb-4">
     <div class="btn_disp_ara_wrap mt-0">
       <div class="card shadow-sm my-2">
         <h5 class="card-header myblog_color_accent">Pages</h5>
@@ -135,7 +155,8 @@ getList();
         {/each}
       </div><!-- post_items_box_end -->
     </div><!-- body_wrap_end -->
-  </div>
+    <PagingBox display={displayPaginate} nextPageDisplay={nextPageDisplay} />
+  </div><!-- container_end -->
  </div>
 
 <style>
