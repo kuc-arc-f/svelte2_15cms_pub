@@ -10,7 +10,7 @@ import LibCommon from '../lib/LibCommon';
 import Config from '../config'
 const config = Config.get_config()
 // Variable
-export let postItems: Array<any> = [],
+export let postItems: Array<any> = [], searchKey = "",
 categoryItems: Array<any> = [],
 pageItems: Array<any> = [];
 
@@ -20,7 +20,7 @@ pageItems: Array<any> = [];
 *
 * @return
 */     
-const getList = async function getList() {
+const getList = async function () {
   try {   
     const db = await LibSqlite.getDb();
     let items: any[] = [];
@@ -58,7 +58,29 @@ const dispCategory = async function (id: number) {
   } catch (e) {
     console.error(e);
   }
-} 
+}
+/**
+* searchPost
+* @param
+*
+* @return
+*/
+const searchPost = async function () {
+  try {   
+//console.log("searchPost");
+    const key = document.querySelector<HTMLInputElement>('#searchKey');
+console.log("key=", key.value);
+//return;
+    const db = await LibSqlite.getDb();
+    let items: any[] = [];
+    items = await LibPost.getSearchItems(db, key.value);
+    items = LibCommon.getDatetimeArray(items);
+console.log(items);
+    postItems = items;
+  } catch (e) {
+    console.error(e);
+  }
+}
 /**
 * start proc
 * @param
@@ -96,6 +118,15 @@ getList();
       </div>
     </div><!-- btn_disp_ara_wrap_end -->
     <h3 class="my-2">Posts</h3>   
+    <!-- serach button -->
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" placeholder="input, serach key"
+       value="" id="searchKey"
+       aria-label="Recipient's username" aria-describedby="button-addon2" />
+      <button class="btn btn-outline-secondary" type="button" id="button-addon2"
+       on:click={searchPost}>Search
+      </button>
+    </div>    
     <div class="body_wrap card shadow-sm mb-4">
       <div id="post_items_box" class="card-body mt-2 mb-4">
         {#each postItems as item}
