@@ -15,7 +15,7 @@ const config = Config.get_config()
 export let postItems: Array<any> = [],
 categoryItems: Array<any> = [],
 pageItems: Array<any> = [],
-searchKey = "", displayPaginate: bool = false, pagePosition: number = 1;
+searchKey = "", displayPaginate: boolean = false, pagePosition: number = 1;
 
 /**
 * getList
@@ -29,15 +29,19 @@ const getList = async function (page: number) {
     let items: any[] = [];
     items = await LibPost.getList(db, page);
     items = LibCommon.getDatetimeArray(items);
-//console.log(items);
     postItems = items;
+//console.log(postItems.length);
     //pages
     const pages = await LibPage.getList(db);
     //category
     const category = await LibCategory.getList(db);
     pageItems = pages;
     categoryItems = category;
-//console.log(categoryItems);
+    //count
+    const count = await LibPost.getCount(db);
+//console.log(count);
+    displayPaginate = LibPagenate.isNextDisplay(page, count);
+//console.log("displayPaginate=", displayPaginate);
   } catch (e) {
     console.error(e);
     alert("error, getList");
@@ -106,8 +110,7 @@ const nextPageDisplay = async function () {
 * @return
 */ 
 getList(1);
-displayPaginate = true;
-//console.log("displayPaginate=", displayPaginate);
+//displayPaginate = true;
 </script>
 
 <!-- MarkUp -->

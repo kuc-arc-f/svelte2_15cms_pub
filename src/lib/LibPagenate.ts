@@ -12,7 +12,7 @@ const LibPagenate = {
       this.per_page = num;
   },
   /**
-  * getMaxPage
+  * getPerPage
   * @param
   *
   * @return
@@ -60,16 +60,22 @@ const LibPagenate = {
       }
       return ret;
   },
-  /*
-  is_next_display(page, count){
-      let ret = 0
+  /**
+  * isPagingDisplay
+  * @param page: number
+  * @param count: number
+  *
+  * @return boolean
+  */   
+  isNextDisplay(page: number, count: number) : boolean
+  {
+      let ret: boolean = false;
       const maxNum = count / this.per_page;
-      if(page < maxNum){
-          ret = 1
+      if(page <= maxNum){
+          ret = true;
       }
       return ret
   },    
-  */
   /**
   * getPageItems
   * @param

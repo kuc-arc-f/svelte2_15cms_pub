@@ -56,6 +56,38 @@ const LibPost = {
     }   
   },
   /**
+  * getCount : 件数の取得
+  * 
+  * @param db : any
+  * @param page: number
+  *
+  * @return
+  */
+  getCount: async function(db : any): Promise<any>
+  {
+    try{
+      let ret: number = 0;
+      const db = await LibSqlite.getDb();
+      const sql = `
+      select count(*) from Post;
+      `;
+console.log(sql);
+      let result = await LibSqlite.select(db, sql);
+      if(result === null) {
+        return ret;
+      }
+      if(result.length > 0) {
+        result = result[0];
+      }
+//console.log(result);
+      ret = result[0];
+      return ret;
+    } catch (e) {
+      console.error(e);
+      throw new Error('Error , getCount');
+    }   
+  },
+  /**
   * get
   * @param
   *
