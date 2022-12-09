@@ -29,9 +29,13 @@ const getItem = async function(id: number) {
 console.log(post);
     let content = post.content;
     content = marked.parse(content);
+    let category = "";
+    if(post.categoryName !== null ){
+      category = post.categoryName;
+    }
     postItem = {
       id: post.id, title: post.title, content: content,
-      category: post.categoryName,
+      category: category,
       createdAt: post.createdAt,
     };
   } catch (e) {

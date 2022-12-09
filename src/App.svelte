@@ -16,7 +16,7 @@ export const routes = {
   '/posts/': posts,
   '/posts/show/:id': posts_show,
   '/pages/show/:id': pages_show,
-
+  //'/test/': test,
 }	
 </script>
 
